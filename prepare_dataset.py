@@ -3,6 +3,13 @@ import numpy as np
 import torch
 import os
 
+
+def mask_sent(sent, uniques):
+    """ Replaces unique words with [MASK]-token. """
+
+    return " ".join(["[MASK]" if word in uniques else word for word in sent.split()])
+
+
 def make_masked_copy(filepath):
     """ Makes a copy of a data set in which all words that are distinct for a class are masked. """
 
