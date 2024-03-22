@@ -16,6 +16,17 @@ import io
 
 from transformers import MT5ForConditionalGeneration, T5Tokenizer, AutoTokenizer, AutoModelForMaskedLM
 
+def load_pretrained_bert(bert_name, device):
+    """ Loads a pretrained BERT model from cloud storage for binary classification finetuning. """
+
+    config = BertConfig.from_pretrained(bert_name, num_labels=2, finetuning_task="binary")
+    tokenizer = BertTokenizer.from_pretrained(bert_name)
+    model = BertForSequenceClassification.from_pretrained(bert_name, config=config)
+
+    model.to(device)
+
+    return tokenizer, model
+
 
 def load_dataset(tokenizer, bert_name, filepath, max_sql=128):
     """ Loads and prepares a local dataset for a BERT model. """
