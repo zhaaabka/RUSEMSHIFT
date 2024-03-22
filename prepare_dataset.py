@@ -29,32 +29,36 @@ def make_masked_copy(filepath):
     df.to_csv(new_fp, sep="\t", index=False, header=False)
 	
 	
-def make_classification_dataset(dataset_dir, experiment_dir):
+def make_classification_dataset(c1_path, c2_path, c3_path, experiment_dir):
     """ Creates a balanced time classification dataset from a diachronic LSCD dataset. """
 
     prep_dir = experiment_dir + "preprocessed_texts/"
     os.makedirs(prep_dir, exist_ok=True)
 
-    with open(dataset_dir + "corpus19.txt", "r") as fh: # with open(dataset_dir + "c1.txt", "r") as fh:
+    with open(c1_path, "r") as fh:
         sents_c1 = fh.read().splitlines()
 
-    with open(dataset_dir + "corpus20.txt", "r") as fh: # with open(dataset_dir + "c2.txt", "r") as fh:
+    with open(c2_path, "r") as fh:
         sents_c2 = fh.read().splitlines()
+        
+    with open(c3_path, "r") as fh:
+        sents_c3 = fh.read().splitlines()
 
     # detemine thresholds
-    n_samples_per_class = min(len(sents_c1), len(sents_c2)) #(min(len(sents_c1), len(sents_c2)) // 10_000) * 10_000
-    n_train = int(n_samples_per_class * 0.8 * 2)
-    n_test = n_samples_per_class * 2 - n_train
+    n_samples_per_class = min([len(sents_c1), len(sents_c2), len(sents_c3)])
+    n_train = int(n_samples_per_class * 0.8 * 3)
+    n_test = n_samples_per_class * 3 - n_train
 
 
     # collect samples for each class
     df_0 = pd.DataFrame({"text": sents_c1, "label": 0}).sample(n=n_samples_per_class, replace=False)
     df_1 = pd.DataFrame({"text": sents_c2, "label": 1}).sample(n=n_samples_per_class, replace=False)
+    df_2 = pd.DataFrame({"text": sents_c3, "label": 2}).sample(n=n_samples_per_class, replace=False)
 
     # sample train and test data for each label without overlap
     perm = np.random.permutation(n_samples_per_class)
-    train_df = pd.concat([df_0.iloc[perm[:(n_train // 2)]], df_1.iloc[perm[:(n_train // 2)]]], ignore_index=True)
-    test_df = pd.concat([df_0.iloc[perm[(n_train // 2):]], df_1.iloc[perm[(n_train // 2):]]], ignore_index=True)
+    train_df = pd.concat([df_0.iloc[perm[:(n_train // 2)]], df_1.iloc[perm[:(n_train // 2)]], df_2.iloc[perm[:(n_train // 2)]]], ignore_index=True)
+    test_df = pd.concat([df_0.iloc[perm[(n_train // 2):]], df_1.iloc[perm[(n_train // 2):]], df_2.iloc[perm[:(n_train // 2)]]], ignore_index=True)
 
     # check balance of labels
     assert np.all(train_df.label.value_counts() / n_train == test_df.label.value_counts() / n_test), "Classification dataset is not balanced!"
