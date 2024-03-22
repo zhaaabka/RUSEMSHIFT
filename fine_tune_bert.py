@@ -19,7 +19,7 @@ from transformers import MT5ForConditionalGeneration, T5Tokenizer, AutoTokenizer
 def load_pretrained_bert(bert_name, device):
     """ Loads a pretrained BERT model from cloud storage for binary classification finetuning. """
 
-    config = BertConfig.from_pretrained(bert_name, num_labels=2, finetuning_task="binary")
+    config = BertConfig.from_pretrained(bert_name, num_labels=3, problem_type="multi_label_classification")
     tokenizer = BertTokenizer.from_pretrained(bert_name)
     model = BertForSequenceClassification.from_pretrained(bert_name, config=config)
 
