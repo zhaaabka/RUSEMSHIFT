@@ -32,8 +32,8 @@ class DataProcessor(object):
             return lines
 
 
-class BinaryProcessor(DataProcessor):
-    """ Processor for the binary data sets. """
+class CategoricalProcessor(DataProcessor):
+    """ Processor for the categorical data sets. """
 
     def get_examples(self, filepath, set_type):
 
@@ -41,7 +41,7 @@ class BinaryProcessor(DataProcessor):
 
     def get_labels(self):
 
-        return ["0", "1"]
+        return ["0", "1", "2"]
 
     def _create_examples(self, lines, set_type):
         """ Creates examples. """
