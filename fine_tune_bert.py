@@ -1,4 +1,4 @@
-from models.utils.bert_utils import BinaryProcessor, convert_examples_to_features
+from models.utils.bert_utils import CategoricalProcessor, convert_examples_to_features
 from transformers import get_linear_schedule_with_warmup
 
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
@@ -33,7 +33,7 @@ def load_dataset(tokenizer, bert_name, filepath, max_sql=128):
 
     set_type = filepath.split("/")[-1][:-4]
 
-    processor = BinaryProcessor()
+    processor = CategoricalProcessor()
 
     label_list = processor.get_labels()
     examples = processor.get_examples(filepath, set_type)
