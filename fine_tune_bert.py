@@ -68,16 +68,6 @@ def load_local_bert(bert_dir, device, output_hidden_states=False):
 
     return tokenizer, model
 
-def load_pretrained_bert(bert_name, device):
-    """ Loads a pretrained BERT model from cloud storage for binary classification finetuning. """
-
-    config = BertConfig.from_pretrained(bert_name, num_labels=2, finetuning_task="binary")
-    tokenizer = BertTokenizer.from_pretrained(bert_name)
-    model = BertForSequenceClassification.from_pretrained(bert_name, config=config)
-
-    model.to(device)
-
-    return tokenizer, model
 
 def finetune_bert(experiment_dir, device="cpu", bert_name="bert-base-multilingual-cased", masked=True, **params):
     """ Finetunes a pretrained BERT model on a sentence time classification objective. """
