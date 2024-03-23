@@ -121,7 +121,7 @@ def train_bert(train_dataset, model, tokenizer, device, n_epochs=1, batch_size=1
 
     for _ in tqdm(range(n_epochs), desc="BERT Training"):
 
-        for step, batch in enumerate(train_dataloader): #enumerate(tqdm(train_dataloader, desc="Current Epoch")):
+        for step, batch in enumerate(tqdm(train_dataloader)): #enumerate(tqdm(train_dataloader, desc="Current Epoch")):
 
             batch = tuple(t.to(device) for t in batch)
 
