@@ -1,3 +1,6 @@
+""" Код почти целиком взят отсюда: https://github.com/sazzy4o/ualberta-lscdiscovery/blob/main/graded_change/models/utils/bert_utils.py """
+
+
 """ BERT Utilities adopted from The Google AI Language Team Authors and The HuggingFace Inc. team. """
 
 from multiprocessing import Pool
