@@ -1,3 +1,6 @@
+""" Код для обучения BERT с небольшими изменениями взят отсюда: https://github.com/sazzy4o/ualberta-lscdiscovery/blob/main/graded_change/models/context_dependent.py """
+
+
 from models.utils.bert_utils import CategoricalProcessor, convert_examples_to_features
 from transformers import get_linear_schedule_with_warmup
 
